@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "build": "prisma generate"
   },
   "keywords": [],
   "author": "Yasir Naseem",
