@@ -21,8 +21,46 @@ model User {
   role            Role    @default(USER)
   isEmailVerified Boolean @default(false)
 
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  questions Question[]
+}
+
+model Topic {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  questions Question[]
+}
+
+model Question {
+  id            Int          @id @default(autoincrement())
+  questionText  String
+  difficulty    Difficulty
+  type          QuestionType
+  options       Json?
+  correctAnswer Json
+
+  topicId Int
+  topic   Topic @relation(fields: [topicId], references: [id])
+
+  createdBy     Int
+  createdByUser User @relation(fields: [createdBy], references: [id])
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+enum QuestionType {
+  MCQ
+  TEXT
+}
+
+enum Difficulty {
+  EASY
+  MEDIUM
+  HARD
 }
 
 enum Role {

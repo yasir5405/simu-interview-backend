@@ -48,3 +48,27 @@ export const verifyJWT = async (
     });
   }
 };
+
+export const requireAdmin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const user = req.user;
+
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication required",
+    });
+  }
+
+  if (user?.role !== "ADMIN") {
+    return res.status(403).json({
+      success: false,
+      message: "Forbidden: Admin access only",
+    });
+  }
+
+  next();
+};

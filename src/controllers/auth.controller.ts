@@ -93,8 +93,8 @@ export const loginUser = async (req: Request, res: Response) => {
       {
         id: user.id,
       },
-      JWT_SECRET!,
-      { expiresIn: "15m" }
+      JWT_SECRET!
+      // { expiresIn: "15m" }
     );
 
     res.status(200).json({
