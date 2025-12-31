@@ -100,3 +100,53 @@ export const postAttempt = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getAttempts = async (req: Request, res: Response) => {
+  const user = req.user;
+
+  if (!user) {
+    return res.status(401).json({
+      success: false,
+      message: "Authentication required",
+    });
+  }
+
+  try {
+    const attempts = await prisma.attempt.findMany({
+      where: {
+        userId: user.id,
+      },
+      orderBy: {
+        attemptedAt: "desc",
+      },
+      select: {
+        id: true,
+        questionId: true,
+        isCorrect: true,
+        score: true,
+        timeTaken: true,
+        attemptedAt: true,
+        question: {
+          select: {
+            questionText: true,
+            type: true,
+            difficulty: true,
+            topicId: true,
+          },
+        },
+      },
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Attempts fetched successfully",
+      attempts,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

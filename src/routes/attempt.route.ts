@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { verifyJWT } from "../middlewares/auth.middleware";
-import { postAttempt } from "../controllers/attempt.controller";
+import { getAttempts, postAttempt } from "../controllers/attempt.controller";
 
 const attemptRouter = Router();
 
 attemptRouter.post("/", verifyJWT, postAttempt);
-attemptRouter.get("/me", verifyJWT);
+attemptRouter.get("/me", verifyJWT, getAttempts);
 
 export { attemptRouter };
