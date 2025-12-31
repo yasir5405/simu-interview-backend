@@ -24,6 +24,7 @@ model User {
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   questions Question[]
+  attempts  Attempt[]
 }
 
 model Topic {
@@ -48,8 +49,9 @@ model Question {
   createdBy     Int
   createdByUser User @relation(fields: [createdBy], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  attempts  Attempt[]
 }
 
 enum QuestionType {
@@ -66,4 +68,24 @@ enum Difficulty {
 enum Role {
   USER
   ADMIN
+}
+
+model Attempt {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+
+  userAnswer Json
+  isCorrect  Boolean
+  score      Int
+
+  timeTaken   Int?
+  attemptedAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([questionId])
 }
