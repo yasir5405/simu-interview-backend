@@ -9,6 +9,7 @@ export const signupUser = async (req: Request, res: Response) => {
 
   if (!parsedBody.success) {
     return res.status(400).json({
+      success: false,
       message: "Invalid data format",
       error: parsedBody.error.issues[0].message,
     });
@@ -31,17 +32,20 @@ export const signupUser = async (req: Request, res: Response) => {
     const { password: _, ...safeUser } = user;
 
     res.status(201).json({
+      success: true,
       message: "Signup successful",
       user: safeUser,
     });
   } catch (error: any) {
     if (error.code === "P2002") {
       return res.status(409).json({
+        success: false,
         message: "Email already exists",
       });
     }
     console.error(error);
     return res.status(500).json({
+      success: false,
       message: "Internal server error",
     });
   }
@@ -52,6 +56,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
   if (!parsedBody.success) {
     return res.status(400).json({
+      success: false,
       message: "Invalid data format",
       error: parsedBody.error.issues[0].message,
     });
@@ -68,6 +73,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
     if (!user) {
       return res.status(401).json({
+        success: false,
         message: "Invalid credentials",
       });
     }
@@ -76,6 +82,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
     if (!isMatch) {
       return res.status(401).json({
+        success: false,
         message: "Invalid credentials",
       });
     }
@@ -91,13 +98,23 @@ export const loginUser = async (req: Request, res: Response) => {
     );
 
     res.status(200).json({
+      success: true,
       message: "Login Successful",
       token: token,
     });
   } catch (error: any) {
     console.error(error);
     return res.status(500).json({
+      success: false,
       message: "Internal server error",
     });
   }
+};
+
+export const fetchUser = async (req: Request, res: Response) => {
+  res.status(200).json({
+    success: true,
+    message: "User details fetched successfully",
+    user: req.user,
+  });
 };
