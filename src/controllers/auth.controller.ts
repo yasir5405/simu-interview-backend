@@ -29,12 +29,12 @@ export const signupUser = async (req: Request, res: Response) => {
       },
     });
 
-    const { password: _, ...safeUser } = user;
+    // const { password: _, ...safeUser } = user;
 
     res.status(201).json({
       success: true,
       message: "Signup successful",
-      user: safeUser,
+      // user: safeUser,
     });
   } catch (error: any) {
     if (error.code === "P2002") {
