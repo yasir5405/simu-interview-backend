@@ -19,7 +19,7 @@ export const signUpSchema = z
       .string({ error: "Name cannot be empty" })
       .min(2, { error: "Name should be at least 2 characters long." })
       .max(100, { error: "Name cannot be more than 100 characters long." }),
-    role: z.enum(["USER", "ADMIN"]),
+    role: z.enum(["USER", "ADMIN"]).optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
